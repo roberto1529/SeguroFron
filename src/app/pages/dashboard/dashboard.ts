@@ -7,10 +7,12 @@ import { Table, TableModule } from 'primeng/table';
 import { EndPointService } from './services/endpoint.service';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
     selector: 'app-dashboard',
-    imports: [TableModule, ButtonModule, IconFieldModule, InputTextModule,InputIconModule, ReactiveFormsModule, CommonModule],
+    imports: [TableModule, ButtonModule, IconFieldModule, InputTextModule, InputIconModule,
+        ReactiveFormsModule, CommonModule, DialogModule],
     templateUrl: './dashboard.html',
 })
 export class Dashboard implements OnInit {
@@ -29,44 +31,53 @@ export class Dashboard implements OnInit {
         requiresNumber: 'Debe contener al menos un número',
         requiresSpecialChar: 'Debe incluir al menos un carácter especial',
     };
-
+    TituloForm: string = 'Crear'
+    visible = false;
     form = this.formBuilder.group({
-        id: [''],
         buscar: [''],
-        nombre: ['', [
+        numeroIdentificacion: ['', [
             Validators.required,
-            Validators.minLength(3),
+            Validators.minLength(12),
+            Validators.maxLength(12)
+        ]],
+        primerNombre: ['', [
+            Validators.required,
+            Validators.minLength(3)
+        ]],
+        segundoNombre: [''], // No es requerido
+        primerApellido: ['', [
+            Validators.required,
+            Validators.minLength(3)
+        ]],
+        segundoApellido: ['', [
+            Validators.required,
+            Validators.minLength(3)
+        ]],
+        telefonoContacto: ['', [
+            Validators.required
+        ]],
+        email: ['', [
+            Validators.required,
+            Validators.email
+        ]],
+        fechaNacimiento: ['', [
+            Validators.required
+        ]],
+        valorEstimadoSeguro: [0, [
+            Validators.required
+        ]],
+        observaciones: ['']
 
-        ]],
-        papellido: ['', [
-            Validators.required,
-            Validators.minLength(3),
-        ]],
-        sapellido: ['', [
-            Validators.required,
-            Validators.minLength(3),
-            //   CustomValidators.noWhitespaceValidator,
-            //   CustomValidators.firstLetterUppercase
-        ]],
-        pass: ['', [
-            Validators.required,
-            Validators.minLength(8),
-        ]],
-        passcryto: [''],
-        correo: ['', [Validators.required, Validators.email]],
-        rol: ['', Validators.required],
-        usuario: [''],
-        estado: [false]
     });
 
-    constructor(private endp: EndPointService){}
+    constructor(private endp: EndPointService) { }
 
     ngOnInit(): void {
         this.getData()
     }
 
-    private getData() : void {
-        this.endp.getAll().subscribe((res : any)=>{
+    private getData(): void {
+        this.endp.getAll().subscribe((res: any) => {
             console.log(res);
             this.loading = false;
             this.usuarios = res;
@@ -89,16 +100,46 @@ export class Dashboard implements OnInit {
             .map(error => this.errorMessages[error]);
     }
 
-    
-  clear(table: Table) {
-    table.clear();
-    this.form.reset();
-  }
 
-  searchGlobal(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.dt2.filterGlobal(input.value, 'contains');
-  }
+    clear(table: Table) {
+        table.clear();
+        this.form.reset();
+    }
+
+    searchGlobal(event: Event) {
+        const input = event.target as HTMLInputElement;
+        this.dt2.filterGlobal(input.value, 'contains');
+    }
 
 
+    formModal(titulo: string, data?: any): void {
+        console.log(data, titulo);
+        
+        this.TituloForm = titulo;
+        this.visible = !this.visible;
+        if (titulo === 'Editar') {
+          setTimeout(() => {
+            // this.form.patchValue({
+
+            //   nombre: data?.nombre,
+            //   papellido: data?.apellido1,
+            //   sapellido: data?.apellido2,
+            //   rol: data?.rol,
+            //   correo: data?.correo,
+            //   usuario: data?.usuario
+            // });
+          }, 0);
+        }else{
+          this.form.reset();
+        }
+        
+      }
+
+    onCrear(){
+        console.log(this.form.value);
+    }
+
+    onEditar(){
+        console.log(this.form.value);
+    }
 }

@@ -36,8 +36,8 @@
           </ng-template>
           <ng-template #caption>
               <div class="flex gap-2">
-                <!-- (click)="formModal('Crear empleado')" -->
-                  <p-button label="Crear" [outlined]="true" icon="pi pi-user-plus"  />
+                
+                  <p-button label="Crear" [outlined]="true" icon="pi pi-user-plus" (click)="formModal('Crear')" />
                   <p-button label="limpiar" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt2)" />
                   <p-iconfield iconPosition="left" class="ml-auto">
                     <form [formGroup]="form">
@@ -79,4 +79,103 @@
               </tr>
           </ng-template>
       </p-table>
-  </div>
+</div>
+
+
+
+<p-dialog [header]="TituloForm" [maximizable]="false" [draggable]="false" [modal]="true" 
+          [(visible)]="visible" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+          <form [formGroup]="form">
+            <div class="grid grid-cols-2 gap-4">
+              
+              <div class="flex flex-col gap-2">
+                <label for="numeroIdentificacion">Número de Identificación</label>
+                <input pInputText id="numeroIdentificacion" formControlName="numeroIdentificacion" autocomplete="off" />
+                @for (error of getFieldErrors('numeroIdentificacion'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="primerNombre">Primer Nombre</label>
+                <input pInputText id="primerNombre" formControlName="primerNombre" autocomplete="off" />
+                @for (error of getFieldErrors('primerNombre'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="segundoNombre">Segundo Nombre</label>
+                <input pInputText id="segundoNombre" formControlName="segundoNombre" autocomplete="off" />
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="primerApellido">Primer Apellido</label>
+                <input pInputText id="primerApellido" formControlName="primerApellido" autocomplete="off" />
+                @for (error of getFieldErrors('primerApellido'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="segundoApellido">Segundo Apellido</label>
+                <input pInputText id="segundoApellido" formControlName="segundoApellido" autocomplete="off" />
+                @for (error of getFieldErrors('segundoApellido'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="telefonoContacto">Teléfono de Contacto</label>
+                <input pInputText id="telefonoContacto" formControlName="telefonoContacto" autocomplete="off" />
+                @for (error of getFieldErrors('telefonoContacto'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="email">Correo Electrónico</label>
+                <input pInputText id="email" formControlName="email" autocomplete="off" />
+                @for (error of getFieldErrors('email'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                <p-calendar id="fechaNacimiento" formControlName="fechaNacimiento" dateFormat="yy-mm-dd" showIcon="true"></p-calendar>
+                @for (error of getFieldErrors('fechaNacimiento'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="valorEstimadoSeguro">Valor Estimado del Seguro</label>
+                <input pInputText id="valorEstimadoSeguro" formControlName="valorEstimadoSeguro" type="number" />
+                @for (error of getFieldErrors('valorEstimadoSeguro'); track error) {
+                  <small class="text-red-500">{{ error }}</small>
+                }
+              </div>
+          
+              <div class="flex flex-col gap-2">
+                <label for="observaciones">Observaciones</label>
+                <textarea pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+              </div>
+          
+            </div>
+          
+            <br /><br />
+          
+            <div class="flex justify-center">
+                @if(TituloForm === 'Crear'){
+                    <p-button label="Guardar" [disabled]="form.invalid" [outlined]="false" size="large" icon="pi pi-check" iconPos="right" (click)="onCrear()" />
+                  }
+                  @if(TituloForm !== 'Crear'){
+                  <p-button label="Guardar" [disabled]="form.invalid" [outlined]="false" size="large" icon="pi pi-check" iconPos="right" (click)="onEditar()" />
+                  }
+            </div>
+            
+            <!-- <p-toast />     -->
+          </form>          
+      
+</p-dialog>
