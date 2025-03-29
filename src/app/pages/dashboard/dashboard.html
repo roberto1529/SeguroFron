@@ -69,7 +69,8 @@
                           align-content: center;
                           justify-content: flex-start;
                           align-items: center;     gap: 8px;">
-                          <!-- <p-button icon="pi pi-pencil"  severity="warn" pTooltip="Editar" tooltipPosition="bottom" (click)="formModal('Editar empleado', datos)"/> -->
+                          <p-button icon="pi pi-pencil"  severity="warn" pTooltip="Editar" tooltipPosition="bottom" (click)="formModal('Editar', datos)"/>
+                          <p-button icon="pi pi-trash"  severity="danger" pTooltip="Eliminar" tooltipPosition="bottom" (click)="onDelete(datos)"/>
                  
                       </form>
   
@@ -143,7 +144,7 @@
           
               <div class="flex flex-col gap-2">
                 <label for="fechaNacimiento">Fecha de Nacimiento</label>
-                <p-calendar id="fechaNacimiento" formControlName="fechaNacimiento" dateFormat="yy-mm-dd" showIcon="true"></p-calendar>
+                <p-datepicker  id="fechaNacimiento" formControlName="fechaNacimiento" dateFormat="yy-mm-dd" showIcon="true"></p-datepicker>
                 @for (error of getFieldErrors('fechaNacimiento'); track error) {
                   <small class="text-red-500">{{ error }}</small>
                 }
@@ -159,7 +160,7 @@
           
               <div class="flex flex-col gap-2">
                 <label for="observaciones">Observaciones</label>
-                <textarea pInputTextarea id="observaciones" formControlName="observaciones"></textarea>
+                <textarea cols="2" pTextarea id="observaciones" formControlName="observaciones"></textarea>
               </div>
           
             </div>

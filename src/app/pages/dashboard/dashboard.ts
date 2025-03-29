@@ -8,11 +8,13 @@ import { EndPointService } from './services/endpoint.service';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
+import { DatePickerModule } from 'primeng/datepicker';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
     selector: 'app-dashboard',
     imports: [TableModule, ButtonModule, IconFieldModule, InputTextModule, InputIconModule,
-        ReactiveFormsModule, CommonModule, DialogModule],
+        ReactiveFormsModule, CommonModule, DialogModule, DatePickerModule, TextareaModule],
     templateUrl: './dashboard.html',
 })
 export class Dashboard implements OnInit {
@@ -60,9 +62,7 @@ export class Dashboard implements OnInit {
             Validators.required,
             Validators.email
         ]],
-        fechaNacimiento: ['', [
-            Validators.required
-        ]],
+        fechaNacimiento: [null as Date | null, Validators.required],
         valorEstimadoSeguro: [0, [
             Validators.required
         ]],
@@ -114,32 +114,67 @@ export class Dashboard implements OnInit {
 
     formModal(titulo: string, data?: any): void {
         console.log(data, titulo);
-        
+
         this.TituloForm = titulo;
         this.visible = !this.visible;
         if (titulo === 'Editar') {
-          setTimeout(() => {
-            // this.form.patchValue({
 
-            //   nombre: data?.nombre,
-            //   papellido: data?.apellido1,
-            //   sapellido: data?.apellido2,
-            //   rol: data?.rol,
-            //   correo: data?.correo,
-            //   usuario: data?.usuario
-            // });
-          }, 0);
-        }else{
-          this.form.reset();
+            setTimeout(() => {
+                this.form.patchValue({
+                    numeroIdentificacion: data.numeroIdentificacion,
+                    primerNombre: data.primerNombre,
+                    segundoNombre: data.segundoNombre,
+                    primerApellido: data.primerApellido,
+                    segundoApellido: data.segundoApellido,
+                    telefonoContacto: data.telefonoContacto,
+                    email: data.email,
+                    fechaNacimiento: data.fechaNacimiento ? new Date(data.fechaNacimiento) : null, // Convertir a Date
+                    valorEstimadoSeguro: data.valorEstimadoSeguro,
+                    observaciones: data.observaciones
+                });
+            }, 0);
+        } else {
+            this.form.reset();
         }
-        
-      }
 
-    onCrear(){
-        console.log(this.form.value);
     }
 
-    onEditar(){
-        console.log(this.form.value);
+    onCrear() {
+        this.endp.SetUser(this.form.value).subscribe((res: any) => {
+            console.log('response', res)
+            this.visible = false;
+            this.getData();
+        })
+    }
+
+    onEditar() {
+        if (this.form.invalid) {
+            console.log('Formulario inválido');
+            return;
+        }
+
+        const datos: any = this.form.value;
+
+        if (datos.numeroIdentificacion.length !== 12) {
+            console.error('El número de identificación debe tener exactamente 12 caracteres.');
+            return;
+        }
+
+        this.endp.PutUser(this.form.value, datos.numeroIdentificacion).subscribe((res: any) => {
+            console.log('edite res', res);
+            this.visible = false;
+            this.getData();
+        });
+
+    }
+
+    onDelete(data?: any) {
+
+        this.endp.DelUser(data.numeroIdentificacion).subscribe((res: any) => {
+            console.log('edite res', res);
+            this.visible = false;
+            this.getData();
+        });
+
     }
 }

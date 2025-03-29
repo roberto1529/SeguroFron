@@ -12,23 +12,18 @@ export class EndPointService {
   public getAll(){
       return this.http.get(this.endpoint);
   }
-  
-
 
   public SetUser(dato: any){
     return this.http.post(this.endpoint, dato);
   }
 
-//   public SetEstado(dato: any){
-//     let datos = this.crypto.encryptData(dato);
-//     const send = {data: datos}
-//     return this.http.put(this.endpoint+'/UpdateEstado', send);
-//   }
+  public PutUser(dato: any, id: string){
+    return this.http.put(`${this.endpoint}/${id}`, dato);
+  }
 
-//   public PutUser(dato: any){
-//     let datos = this.crypto.encryptData(dato);
-//     const send = {data: datos}
-//     return this.http.put(this.endpoint+'/ActualizarUsu', send);
-//   }
+  public DelUser(id: string){
+    return this.http.delete(`${this.endpoint}/${id}`);
+  }
+
 
 }
