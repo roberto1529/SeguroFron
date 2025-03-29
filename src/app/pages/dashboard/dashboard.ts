@@ -37,7 +37,7 @@ export class Dashboard implements OnInit {
         buscar: [''],
         numeroIdentificacion: ['', [
             Validators.required,
-            Validators.minLength(12),
+            Validators.minLength(8),
             Validators.maxLength(12)
         ]],
         primerNombre: ['', [
