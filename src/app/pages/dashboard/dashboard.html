@@ -1,0 +1,82 @@
+<div class="card">
+    
+    <h3 class="text-center uppercase">Asegurados</h3>
+    <br>
+      <p-table #dt2 
+              [value]="usuarios" 
+              dataKey="numeroIdentificacion"
+              [rows]="10"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              [loading]="loading"
+              [paginator]="true"
+              [globalFilterFields]="['numeroIdentificacion',
+              'primerNombre',
+              'segundoNombre',
+              'primerApellido',
+              'segundoApellido',
+              'telefonoContacto',
+              'email',
+              'fechaNacimiento',
+              'valorEstimadoSeguro',
+              'observaciones']"
+              [tableStyle]="{ 'min-width': '75rem' }">
+          <ng-template #header>
+            
+              <tr>
+                  <th>Dni</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Telefono</th>
+                  <th>Correo</th>
+                  <th>Fecha Nac.</th>
+                  <th>valor Est. Seguro</th>
+                  <th>Observaciones</th>
+                  <th>Acciones</th>
+              </tr>
+          </ng-template>
+          <ng-template #caption>
+              <div class="flex gap-2">
+                <!-- (click)="formModal('Crear empleado')" -->
+                  <p-button label="Crear" [outlined]="true" icon="pi pi-user-plus"  />
+                  <p-button label="limpiar" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt2)" />
+                  <p-iconfield iconPosition="left" class="ml-auto">
+                    <form [formGroup]="form">
+                      <p-inputicon>
+                          <i class="pi pi-search"></i>
+                      </p-inputicon>
+                     
+                          <input pInputText type="text" formControlName="buscar" (input)="searchGlobal($event)" placeholder="Buscar">
+                      </form>
+                      
+                  </p-iconfield>
+              </div>
+          </ng-template>
+          <ng-template #body let-datos let-i="rowIndex">
+            <tr>
+    
+                  <td>{{ datos.numeroIdentificacion}}</td>
+                  <td>{{ datos.primerNombre }} {{ datos.segundoNombre }}</td>
+                  <td>{{ datos.primerApellido }} {{ datos.segundoApellido }}</td>
+                  <td>{{ datos.telefonoContacto }}</td>
+                  <td>{{ datos.email }}</td>
+                  <td>{{ datos.fechaNacimiento | date:"dd/MM/yyyy h:mm a" }}</td>
+                  <td>{{ datos.valorEstimadoSeguro }}</td>
+                  <td>{{ datos.observaciones }}</td>
+                  <td>
+                     
+                      <form [formGroup]="form" style="    display: flex;
+                          flex-direction: row;
+                          align-content: center;
+                          justify-content: flex-start;
+                          align-items: center;     gap: 8px;">
+                          <!-- <p-button icon="pi pi-pencil"  severity="warn" pTooltip="Editar" tooltipPosition="bottom" (click)="formModal('Editar empleado', datos)"/> -->
+                 
+                      </form>
+  
+                  </td>
+  
+  
+              </tr>
+          </ng-template>
+      </p-table>
+  </div>
